@@ -4,13 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat App</title>
+    <link rel="stylesheet" href="styles.css">
     <script src="script.js" type="module"></script>
   </head>
   <body>
     <main>
       <h1>Chat App</h1>
       <div class="outerContainer" id="chat">
-        <div class="box boxOurterMessages">
+        <div class="box boxOuterMessages">
+          <div class="boxChatMessages">
+            <template id="templateChatMessage">
+              <div class="chatMessage"></div>
+            </template>
+          </div>
           <form id="formChatMessage">
             <input
               type="text"
@@ -23,8 +29,28 @@
             <button class="btn btnSendMessage">Send</button>
           </form>
         </div>
-        <div class="box boxOuterUsernames"></div>
+        <div class="box boxOuterUsernames">
+          <div class="boxTitle">currently in the chat</div>
+          <div class="boxUsernames"></div>
+        </div>
       </div>
+      <div class="areaNotifications">
+
+      </div>
+      <dialog class="modal" id="modal">
+        <p>enter user name:</p>
+        <form id="formUsername" method="dialog">
+          <input
+            class="inputText"
+            type="text"
+            name="username"
+            id="username"
+            placeholder="Enter your username"
+            required
+          />
+          <button class="btn" type="submit">Enter</button>
+        </form>
+      </dialog>
     </main>
   </body>
 </html>
