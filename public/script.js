@@ -7,15 +7,16 @@ formUsername.addEventListener("submit", (form) => {
   const username = formData.get("username");
   makeWebsocket(username);
   modal.close();
-  // Call the function to establish connection
+  
 });
+// Call the function to establish connection
 
 modal.showModal()
 async function makeWebsocket(username) {
   if (username === undefined) {
     return console.error("Username needs to connect to websocket");
   }
-  const ws = new WebSocket("ws://localhost:3001");
+  const ws = new WebSocket("ws://172.20.10.3:3001");
   ws.heartbeat = heartbeat;
   ws.heartbeat();
 
@@ -48,7 +49,7 @@ async function makeWebsocket(username) {
         addUsernameToList(message.username);
       } else if (message.type === "disconnect") {
         displayNotifications(`
-          ${username} has left the chat`,
+          ${message.username} has left the chat`,
            "error"
           );
         handleUsernameRefresh(message.usernames);
@@ -152,7 +153,7 @@ function addMessage(messageUsername, messageBody, messageColor) {
       return console.error("Notification needs to have a text");
     }
     if (["info", "error"].includes(type) === false) {
-      return console.error("tyoe of notification not supported");
+      return console.error("type of notification not supported");
     }
     if (duration === undefined) {
       return console.error("Duration must be defined");

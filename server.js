@@ -1,3 +1,4 @@
+// serves the frontEnd js file
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -10,5 +11,5 @@ app.get('/', (req, res) => {
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+  console.log(`Server running on http://172.20.10.3:${port}`);
 });

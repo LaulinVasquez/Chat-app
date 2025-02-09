@@ -52,7 +52,7 @@ wss.on("connection", (ws) => {
   });
 });
 
-console.log("WebSocket server running on ws://localhost:3001");
+console.log("WebSocket server running on ws://172.20.10.3:3001");
 
 function sendMessageToAllClients(clients, message) {
   if (!(clients instanceof Map)) {
