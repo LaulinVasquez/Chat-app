@@ -16,7 +16,7 @@ async function makeWebsocket(username) {
   if (username === undefined) {
     return console.error("Username needs to connect to websocket");
   }
-  const ws = new WebSocket("ws://172.20.10.3:3001");
+  const ws = new WebSocket("ws://localhost:3001");
   ws.heartbeat = heartbeat;
   ws.heartbeat();
 

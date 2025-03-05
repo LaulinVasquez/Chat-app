@@ -52,5 +52,5 @@ The following items I plan to fix, improve, and/or add to this project in the fu
 
 * [Improve UI/UX ] First thing here
 * [Deply the app online on Heroku,Vercel or AWS]
-* [Add tyoing indicators]
+* [Add typing indicators]
 * [Improve security]

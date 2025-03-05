@@ -3,10 +3,11 @@
   --box-shadow: 0 0 10px 0 rgba(1, 0.1, 0.1, 0.1);
 }
 body {
-  background-color: #ffffff;
+  background-color: #D9C5B2;
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+  color: white;
 }
 
 main {
@@ -162,19 +163,70 @@ main {
 
 /* style modal */
 
-.modal{
-    padding: 2rem;
-    max-width: 50ch;
-    border: none;
-    box-shadow: var(--box-shadow);
-    border-radius: var(--borderRadius);
+.modal {
+  padding: 0;
+  max-width: 50ch;
+  border: 2px solid #4a3e3e;
+  box-shadow: var(--box-shadow);
+  border-radius: 8px;
+  background: white;
+  overflow: hidden;
+}
+
+.modal p {
+  background-color: #4a3e3e;
+  color: white;
+  padding: 12px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 0;
+  border-bottom: 3px solid #d9c5b2; 
 }
 .modal::backdrop{
-    background-color: white;
+    background-color: rgba(0, 0, 0, 0.9);
 }
+#formUsername {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+.inputText {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 2px solid #4a3e3e;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.btn {
+  width: 50%;
+  padding: 10px;
+  background-color: #4a3e3e;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  filter: invert(1);
+}
+.btn:hover {
+  background-color: transparent;
+  filter: invert(1);
+}
+
 #formUsername{
     display: grid;
-    row-gap: 1rem;
+    row-gap: 1rem;  
 }
 
 /* chat GPT code for the messages style from right and left sides */

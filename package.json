@@ -19,6 +19,7 @@
   "homepage": "https://github.com/LaulinVasquez/Chat-app#readme",
   "description": "",
   "dependencies": {
+    "bootstrap": "^5.3.3",
     "express": "^4.21.2",
     "websocket": "^1.0.35",
     "ws": "^8.18.0"
