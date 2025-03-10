@@ -19,8 +19,9 @@ async function makeWebsocket(username) {
   const ws = new WebSocket(
     location.protocol === "https:"
       ? `wss://${location.host}`
-      : `ws://localhost:3001`
+      : `ws://${location.host}`
   );
+  
   ws.heartbeat = heartbeat;
   ws.heartbeat();
 
