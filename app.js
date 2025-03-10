@@ -1,6 +1,5 @@
 const WebSocket = require("ws");
 
-// Use the Heroku-assigned port or default to 3001
 const PORT = process.env.PORT || 3001;
 const wss = new WebSocket.Server({ port: PORT });
 

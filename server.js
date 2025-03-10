@@ -5,7 +5,6 @@ const path = require('path');
 const http = require('http');
 const WebSocket = require('ws');
 
-// Create an HTTP server and attach Express
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
@@ -17,11 +16,9 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'client.html'));
 });
 
-// Handle WebSocket connections
 wss.on('connection', (ws) => {
   console.log('New client connected');
 
-  // Broadcast messages to all clients
   ws.on('message', (message) => {
     console.log(`Received: ${message}`);
     wss.clients.forEach(client => {
