@@ -1,5 +1,9 @@
 const WebSocket = require("ws");
-const wss = new WebSocket.Server({ port: 3001 });
+
+// Use the Heroku-assigned port or default to 3001
+const PORT = process.env.PORT || 3001;
+const wss = new WebSocket.Server({ port: PORT });
+
 const clients = new Map();
 
 wss.on("connection", (ws) => {
@@ -52,7 +56,7 @@ wss.on("connection", (ws) => {
   });
 });
 
-console.log("WebSocket server running on ws://localhost:3001");
+console.log(`WebSocket server running on port ${PORT}`);
 
 function sendMessageToAllClients(clients, message) {
   if (!(clients instanceof Map)) {
