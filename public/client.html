@@ -9,9 +9,9 @@
   </head>
   <body>
     <main>
-      <h1>Chat App</h1>
       <div class="outerContainer" id="chat">
         <div class="box boxOuterMessages">
+          <div class="boxHeader">Chatter Box</div>
           <div class="boxChatMessages">
             <template id="templateChatMessage">
               <div class="chatMessage"></div>
@@ -26,8 +26,12 @@
               placeholder="Type a message..."
               autocomplete="off"
             />
-            <button class="btn btnSendMessage">Send</button>
+            <button class="btn btnSendMessage">
+              <img src="https://img.icons8.com/?size=100&id=fI3Duz1tr-UN&format=png&color=000000" alt="">
+            </button>
           </form>
+        </div>
+        
         </div>
         <div class="box boxOuterUsernames">
           <div class="boxTitle">currently in the chat</div>

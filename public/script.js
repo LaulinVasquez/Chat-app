@@ -1,4 +1,4 @@
-const modal = document.querySelector("#modal");
+const modal = document.querySelector("#modal"); 
 const formUsername = document.querySelector("#formUsername");
 
 formUsername.addEventListener("submit", (form) => {

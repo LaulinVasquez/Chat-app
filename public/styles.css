@@ -1,13 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+VN:wght@100..400&family=Sigmar&display=swap');
 :root {
   --borderRadius: 5px;
   --box-shadow: 0 0 10px 0 rgba(1, 0.1, 0.1, 0.1);
+  --font-family: 'sigmar', "Playwrite VN",sans-serif;
 }
 body {
-  background-color: #D9C5B2;
-  font-family: Arial, sans-serif;
+  background-color: #7a6452;
   margin: 0;
   padding: 0;
-  color: white;
+  color: rgb(0, 0, 0);
 }
 
 main {
@@ -22,6 +23,9 @@ main {
   justify-content: center;
   align-items: center;
 }
+.outerContainer > * {
+  margin: 1rem;
+}
 
 .box {
   border: 1px (121, 121, 121) solid;
@@ -29,34 +33,107 @@ main {
   height: 50vh;
   border-radius: var(--borderRadius);
   box-shadow: var(--box-shadow);
+  background-color: #f5e6da;
 }
 
 .boxOuterMessages {
   display: flex;
   flex-direction: column;
-  justify-content: end;
   width: 500px;
   text-align: left;
   margin-right: 2rem;
+  border-radius: var(--borderRadius);
+  overflow: hidden;
+  position: relative;
+  height: 400px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);  
+}
+
+.boxHeader {
+  background-color: #4a3e3e;
+  font-family: var(--font-family);
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-top-left-radius: var(--borderRadius);
+  border-top-right-radius: var(--borderRadius);
 }
 
 .boxChatMessages {
-  display: grid;
-  row-gap: 1rem;
-  margin-bottom: 1rem;
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  flex-grow: 1;
+  padding: 10px;
+  margin-top: 50px; 
+  display: flex;
 }
+
+/* Scroll to bottom behavior */
+.boxChatMessages::-webkit-scrollbar {
+  width: 5px;
+}
+
+.boxChatMessages::-webkit-scrollbar-thumb {
+  background: #4a3e3e;
+  border-radius: 10px;
+}
+
+.boxChatMessages::-webkit-scrollbar-track {
+  background: #f5e6da;
+}
+
+
 
 .boxUsernames {
   display: grid;
   row-gap: 1rem;
 }
 
+
+
 .boxTitle {
-  font-weight: bold;
   font-size: larger;
   margin-bottom: 0.7rem;
+  font-family: var(--font-family);
 }
+.boxOuterUsernames {
+  background: #f5e6da; 
+  border-radius: 10px; 
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); 
+  width: 300px; 
+  height: 50%;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+}
+
+.boxOuterUsernames .boxTitle {
+  background: #453A37;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin: -20px -20px 10px -20px; 
+  text-align: center;
+}
+
+.boxUsernames {
+  border: 2px solid #000000;
+  border-radius: 8px;
+  padding: 10px;
+  min-height: 50px; 
+  color: #666; 
+}
+
 
 #formChatMessage {
   display: flex;
@@ -280,7 +357,8 @@ main {
         height: 75vh;
     }
     .boxOuterUsernames{
-        width: 100%;
+        width: 80%;
+        height: 60%;
         padding: 1rem;
         text-align: left;
     }
