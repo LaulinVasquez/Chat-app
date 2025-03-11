@@ -7,19 +7,16 @@ formUsername.addEventListener("submit", (form) => {
   const username = formData.get("username");
   makeWebsocket(username);
   modal.close();
-  
 });
-// Call the function to establish connection
 
-modal.showModal()
+modal.showModal();
+
 async function makeWebsocket(username) {
   if (username === undefined) {
     return console.error("Username needs to connect to websocket");
   }
   const ws = new WebSocket(
-    location.protocol === "https:"
-      ? `wss://${location.host}`
-      : `ws://${location.host}`
+    location.protocol === "https:" ? `wss://${location.host}` : `ws://${location.host}`
   );
   
   ws.heartbeat = heartbeat;
@@ -39,35 +36,37 @@ async function makeWebsocket(username) {
     console.error(`WebSocket error: ${error.message}`);
   };
 
-  ws.onmessage = (event) => {
+  ws.onmessage = async (event) => {
+    let message;
+    
+    if (event.data instanceof Blob) {
+      message = await event.data.text();
+    } else {
+      message = event.data;
+    }
+    
     try {
-      const message = JSON.parse(event.data);
-      // Here where JSON file is parsed and displayed in the browser console
-      console.log("Received:", message);
-      if (message.type === "message") {
-        addMessage(message.username, message.body, message.color);
-      } else if (message.type === "connect") {
-        displayNotifications(`
-          ${message.username} has joined the chat`,
-           "info"
-          );
-        addUsernameToList(message.username);
-      } else if (message.type === "disconnect") {
-        displayNotifications(`
-          ${message.username} has left the chat`,
-           "error"
-          );
-        handleUsernameRefresh(message.usernames);
-      } else if (message.type === "heartbeat") {
+      const parsedMessage = JSON.parse(message);
+      console.log("Received:", parsedMessage);
+      
+      if (parsedMessage.type === "message") {
+        addMessage(parsedMessage.username, parsedMessage.body, parsedMessage.color);
+      } else if (parsedMessage.type === "connect") {
+        displayNotifications(`${parsedMessage.username} has joined the chat`, "info");
+        addUsernameToList(parsedMessage.username);
+      } else if (parsedMessage.type === "disconnect") {
+        displayNotifications(`${parsedMessage.username} has left the chat`, "error");
+        handleUsernameRefresh(parsedMessage.usernames);
+      } else if (parsedMessage.type === "heartbeat") {
         console.log("Received heartbeat");
         ws.heartbeat();
-      } else if (message.type === "usernames") {
-        handleUsernameRefresh(message.usernames);
+      } else if (parsedMessage.type === "usernames") {
+        handleUsernameRefresh(parsedMessage.usernames);
       } else {
         console.error("Invalid message type");
       }
     } catch (error) {
-      console.error("Invalid JSON received:", event.data);
+      console.error("Invalid JSON received:", message);
     }
   };
 
@@ -75,7 +74,6 @@ async function makeWebsocket(username) {
     console.log("WebSocket connection closed");
   };
 
-  // Move form event listener outside of ws.onmessage
   const chatMessageForm = document.querySelector("#formChatMessage");
   chatMessageForm.addEventListener("submit", (form) => {
     form.preventDefault();
@@ -99,41 +97,32 @@ async function makeWebsocket(username) {
     }, 10000 * 10 + 2000);
   }
 
-function addMessage(messageUsername, messageBody, messageColor) {
+  function addMessage(messageUsername, messageBody, messageColor) {
     if (!messageUsername || !messageBody) {
-        return console.error("Invalid message");
+      return console.error("Invalid message");
     }
-
     const template = document.querySelector("#templateChatMessage");
     const messageBox = document.querySelector(".boxChatMessages");
-
     const newMessage = template.content.firstElementChild.cloneNode(true);
     const span = document.createElement("span");
     span.textContent = messageUsername;
     span.classList.add("bold");
-
     newMessage.appendChild(span);
     const messageText = document.createTextNode(`: ${messageBody}`);
     newMessage.appendChild(messageText);
-
-    // Get the username of the current user
     const storedUsername = localStorage.getItem("username");
-
-    // If the message was sent by the current user, align it right
     if (messageUsername === storedUsername) {
-        newMessage.classList.add("chatMessage", "sent");
+      newMessage.classList.add("chatMessage", "sent");
     } else {
-        newMessage.classList.add("chatMessage", "received");
+      newMessage.classList.add("chatMessage", "received");
     }
-
     newMessage.style.backgroundColor = `hsl(${messageColor}, 50%, 50%)`;
     messageBox.appendChild(newMessage);
-}
-
+  }
 
   function addUsernameToList(username) {
     if (username === undefined) {
-      return console.error("Username must be define");
+      return console.error("Username must be defined");
     }
     const boxUsernames = document.querySelector(".boxUsernames");
     const newUsername = document.createElement("div");
@@ -142,39 +131,25 @@ function addMessage(messageUsername, messageBody, messageColor) {
   }
 
   function handleUsernameRefresh(newUsernames) {
-    if (newUsernames instanceof Array === false) {
-      return console.error("NewUsernames must be defined");
+    if (!Array.isArray(newUsernames)) {
+      return console.error("NewUsernames must be an array");
     }
-
     const boxUsernames = document.querySelector(".boxUsernames");
     boxUsernames.textContent = "";
-    newUsernames.forEach((username) => {
-      addUsernameToList(username);
-    });
+    newUsernames.forEach(addUsernameToList);
   }
 
   function displayNotifications(text, type, duration = 5000) {
-    if (text === undefined) {
-      return console.error("Notification needs to have a text");
+    if (!text) {
+      return console.error("Notification needs text");
     }
-    if (["info", "error"].includes(type) === false) {
-      return console.error("type of notification not supported");
-    }
-    if (duration === undefined) {
-      return console.error("Duration must be defined");
+    if (!["info", "error"].includes(type)) {
+      return console.error("Unsupported notification type");
     }
     const notification = document.createElement("div");
     notification.textContent = text;
-
-    notification.classList.add("notification");
-    notification.classList.add(`notification-${type}`);
-    notification.classList.add("show");
-
-    const areaNotifications = document.querySelector(".areaNotifications");
-    areaNotifications.appendChild(notification);
-
-    setTimeout(() => {
-      notification.classList.add("hide");
-    }, duration);
+    notification.classList.add("notification", `notification-${type}`, "show");
+    document.querySelector(".areaNotifications").appendChild(notification);
+    setTimeout(() => notification.classList.add("hide"), duration);
   }
 }

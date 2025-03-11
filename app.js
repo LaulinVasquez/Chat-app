@@ -55,7 +55,7 @@ wss.on("connection", (ws) => {
   });
 });
 
-console.log(`WebSocket server running on port ${PORT}`);
+console.log(`WebSocket server running on port localhost:${PORT}`);
 
 function sendMessageToAllClients(clients, message) {
   if (!(clients instanceof Map)) {
