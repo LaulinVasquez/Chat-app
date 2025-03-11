@@ -14,24 +14,33 @@ wss.on("connection", (ws) => {
       console.log("Received:", parsedMessage);
 
       if (parsedMessage.type === "connect") {
-        const metadata = createNewCliente(parsedMessage.username);
+        if (!parsedMessage.username) {
+          return console.error("Username is required for connection.");
+        }
+
+        const metadata = createNewClient(parsedMessage.username);
         clients.set(ws, metadata);
+
+        console.log("Connected clients:", [...clients.values()]);
 
         const connectMessage = {
           type: "connect",
           username: metadata.username,
         };
-        sendMessageToAllClients(clients, connectMessage);
+        sendMessageToAllClients(connectMessage);
         ws.send(
           JSON.stringify({
             type: "usernames",
-            usernames: getUsername(clients),
+            usernames: getUsernames(),
           })
         );
       } else if (parsedMessage.type === "message") {
         const metadata = clients.get(ws);
+        if (!metadata) {
+          return console.error("Message received from unknown client");
+        }
         parsedMessage.color = metadata.color;
-        sendMessageToAllClients(clients, parsedMessage);
+        sendMessageToAllClients(parsedMessage);
       } else {
         console.error("Invalid message type");
       }
@@ -45,10 +54,10 @@ wss.on("connection", (ws) => {
     const clientMetadata = clients.get(ws);
     const disconnectUsername = clientMetadata ? clientMetadata.username : "Unknown";
 
-    sendMessageToAllClients(clients, {
+    sendMessageToAllClients({
       type: "disconnect",
       username: disconnectUsername,
-      usernames: getUsername(clients),
+      usernames: getUsernames(),
     });
 
     clients.delete(ws);
@@ -57,37 +66,29 @@ wss.on("connection", (ws) => {
 
 console.log(`WebSocket server running on port localhost:${PORT}`);
 
-function sendMessageToAllClients(clients, message) {
-  if (!(clients instanceof Map)) {
-    return console.error("Incorrect clients value");
-  }
-  if (!message) {
-    return console.error("Message to send is missing");
-  }
-  if (!message.type) {
-    return console.error("Message type is missing");
+function sendMessageToAllClients(message) {
+  if (!message || !message.type) {
+    return console.error("Invalid message format");
   }
 
   const messageString = JSON.stringify(message);
   clients.forEach((_, client) => {
     if (client.readyState === WebSocket.OPEN) {
+      console.log("Sending to client:", message);
       client.send(messageString);
     }
   });
 }
 
-function createNewCliente(username) {
+function createNewClient(username) {
   if (!username) {
-    return console.error("Username is missing");
+    console.error("Username is missing");
+    return null;
   }
   const color = Math.floor(Math.random() * 360);
   return { color, username };
 }
 
-function getUsername(clients) {
-  const usernames = [];
-  clients.forEach((value) => {
-    usernames.push(value.username);
-  });
-  return usernames;
+function getUsernames() {
+  return Array.from(clients.values()).map(client => client.username);
 }
