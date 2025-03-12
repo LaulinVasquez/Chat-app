@@ -1,3 +1,4 @@
+// Client side websocket connection
 const modal = document.querySelector("#modal"); 
 const formUsername = document.querySelector("#formUsername");
 
@@ -15,6 +16,7 @@ async function makeWebsocket(username) {
   if (username === undefined) {
     return console.error("Username needs to connect to websocket");
   }
+  // Change of websoccket port for heroku
   const ws = new WebSocket(
     location.protocol === "https:" ? `wss://${location.host}` : `ws://${location.host}`
   );
